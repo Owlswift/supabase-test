@@ -84,11 +84,11 @@ export default function Editor() {
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Page Content
             </label>
-            <div
-              contentEditable
-              className="w-full border border-gray-300 rounded-lg px-4 py-4 min-h-[400px] focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent text-gray-800 bg-white prose max-w-none"
-              onInput={(e) => setContent(e.currentTarget.innerHTML ?? "")}
-              dangerouslySetInnerHTML={{ __html: content }}
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Write your content here..."
+              className="w-full border border-gray-300 rounded-lg px-4 py-4 min-h-[400px] focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent text-gray-800 bg-white resize-none"
             />
             <p className="text-xs text-gray-500 mt-2">
               Write your content here. Basic formatting is supported.

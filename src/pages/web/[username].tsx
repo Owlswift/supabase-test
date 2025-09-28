@@ -46,7 +46,11 @@ export default function PublicPage({ page }: PublishedPageProps) {
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-        <Navbar user={null} showEditorLink={true} />
+        <Navbar
+          user={null}
+          showEditorLink={true}
+          title={`@${page.username.toUpperCase()}`}
+        />
 
         <main className="max-w-4xl mx-auto px-6 py-12">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-gray-200/60">

@@ -1,6 +1,4 @@
-Here’s a minimal but clear **README.md** you can drop into your project:
 
-````markdown
 # Supabase + Next.js Page Builder (Test Project)
 
 This is a minimal Next.js project that demonstrates:
@@ -9,6 +7,8 @@ This is a minimal Next.js project that demonstrates:
 - An inline editor to add a **page title** and content.
 - Saving the page into Supabase (Postgres).
 - Serving public pages at `/web/{username}`.
+
+![Demo GIF](docs/demo.gif)
 
 ---
 
@@ -129,9 +129,3 @@ Visit [http://localhost:3000](http://localhost:3000).
 * Add **custom domains / subdomains** support.
 * Improve validation + error handling.
 
----
-
-```
-
-Do you want me to also include a **Quick Demo section** in the README (with example screenshots / GIF placeholders), or should I keep it minimal since this is for a test submission?
-```
