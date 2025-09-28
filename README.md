@@ -1,40 +1,137 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+Here’s a minimal but clear **README.md** you can drop into your project:
 
-## Getting Started
+````markdown
+# Supabase + Next.js Page Builder (Test Project)
 
-First, run the development server:
+This is a minimal Next.js project that demonstrates:
+
+- User authentication with **Supabase Auth** (email + password).
+- An inline editor to add a **page title** and content.
+- Saving the page into Supabase (Postgres).
+- Serving public pages at `/web/{username}`.
+
+---
+
+## 🚀 Setup Instructions
+
+### 1. Clone the repo
+```bash
+git clone <your-repo-url>
+cd <your-repo-folder>
+````
+
+### 2. Install dependencies
+
+```bash
+npm install
+# or
+yarn install
+```
+
+### 3. Setup Supabase
+
+1. Go to [Supabase](https://supabase.com/), create a new project.
+
+2. Copy your project **URL** and **anon public key** from
+   **Project Settings → API**.
+
+3. In the Supabase **SQL Editor**, run:
+
+```sql
+-- Create pages table
+create table pages (
+  id uuid default gen_random_uuid() primary key,
+  owner_id uuid not null references auth.users(id) on delete cascade,
+  username text not null,
+  title text,
+  content text,
+  published boolean default false,
+  inserted_at timestamp with time zone default now(),
+  updated_at timestamp with time zone default now(),
+  constraint pages_username_unique unique (username)
+);
+```
+
+4. Add Row Level Security (RLS) policies:
+
+```sql
+-- Enable RLS
+alter table pages enable row level security;
+
+-- Only the policies we actually need:
+-- Users can create their own pages
+create policy "Users can create pages" on pages
+  for insert with check (auth.uid() = owner_id);
+
+-- Anyone can view published pages
+create policy "Anyone can view published pages" on pages
+  for select using (published = true);
+
+-- Create index for performance
+create index pages_username_idx on pages (username);
+```
+
+### 4. Environment variables
+
+Create a `.env.local` file in your project root:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
+### 5. Run the project
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+---
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## 📂 Project Structure
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+```
+/pages
+  index.tsx          -> Sign in / Sign up
+  editor.tsx         -> Inline editor for logged in users
+  web/[username]     -> Public page display
+/lib
+  supabaseClient.ts -> Supabase client config
+  types.ts          -> holds all interfaces used in the project
+/services
+  authService.ts    -> Auth helpers
+  pageService.ts    -> Page helpers
+/hooks
+  useAuth.ts        -> Auth state management
+  usePageEditor.ts  -> Editor state management
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ⚠️ Limitations
 
-To learn more about Next.js, take a look at the following resources:
+* **Minimal auth**: Only email + password auth, no social providers.
+* **No validations**: Username uniqueness is enforced in DB, but no regex check in frontend.
+* **Basic editor**: Uses a `contentEditable` div — no rich-text or advanced formatting.
+* **Single page per user**: Each user can only have one `username` (unique per owner).
+* **No image/media support**: Only text content stored in Supabase.
+* **No custom domains**: Pages are accessible only via `/web/{username}`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ✅ Next Steps (if extended)
 
-## Deploy on Vercel
+* Add **rich-text editor** (e.g., TipTap, Quill).
+* Allow **multiple pages per user**.
+* Add **media uploads** (Supabase Storage + signed URLs).
+* Add **custom domains / subdomains** support.
+* Improve validation + error handling.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+```
+
+Do you want me to also include a **Quick Demo section** in the README (with example screenshots / GIF placeholders), or should I keep it minimal since this is for a test submission?
+```
