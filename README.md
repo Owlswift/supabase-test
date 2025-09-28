@@ -114,8 +114,7 @@ Visit [http://localhost:3000](http://localhost:3000).
 
 * **Minimal auth**: Only email + password auth, no social providers.
 * **No validations**: Username uniqueness is enforced in DB, but no regex check in frontend.
-* **Basic editor**: Uses a `contentEditable` div — no rich-text or advanced formatting.
-* **Single page per user**: Each user can only have one `username` (unique per owner).
+* **Basic editor**: Uses a textarea — no rich-text or advanced formatting.
 * **No image/media support**: Only text content stored in Supabase.
 * **No custom domains**: Pages are accessible only via `/web/{username}`.
 
@@ -124,7 +123,6 @@ Visit [http://localhost:3000](http://localhost:3000).
 ## ✅ Next Steps (if extended)
 
 * Add **rich-text editor** (e.g., TipTap, Quill).
-* Allow **multiple pages per user**.
 * Add **media uploads** (Supabase Storage + signed URLs).
 * Add **custom domains / subdomains** support.
 * Improve validation + error handling.
